@@ -1,0 +1,15 @@
+{
+  "name": "fso8-1",
+  "version": "1.0.0",
+  "description": "books",
+  "main": "library-backend.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^5.0.0",
+    "graphql": "^16.11.0"
+  }
+}
