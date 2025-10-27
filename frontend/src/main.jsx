@@ -37,8 +37,8 @@ const wsLink = new GraphQLWsLink(
     retryWait: async (attempt) =>
       new Promise((res) => setTimeout(res, 1000 * attempt)),
     on: {
-      connected: () => console.log("✅ WS connected"),
-      closed: () => console.log("❌ WS closed"),
+      connected: () => console.log("WS connected"),
+      closed: () => console.log("WS closed"),
       error: (err) => console.error("WS error", err),
     },
   })
