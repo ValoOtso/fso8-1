@@ -70,3 +70,26 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const ME = gql`
+  query {
+    me {
+      username
+      favoriteGenre
+    }
+  }
+`;
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      author {
+        name
+      }
+      genres
+      id
+      published
+      title
+    }
+  }
+`;

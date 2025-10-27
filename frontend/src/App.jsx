@@ -4,8 +4,29 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/Login";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { ALL_AUTHORS, ALL_BOOKS, ALL_GENRES } from "./queries";
-import { useApolloClient, useQuery } from "@apollo/client/react";
+import { ALL_AUTHORS, ALL_BOOKS, ALL_GENRES, BOOK_ADDED } from "./queries";
+import {
+  useApolloClient,
+  useQuery,
+  useSubscription,
+} from "@apollo/client/react";
+import Recommend from "./components/Recommend";
+
+const updateCache = (cache, query, addedBook) => {
+  const uniqByName = (a) => {
+    let seen = new Set();
+    return a.filter((item) => {
+      let k = item.title;
+      return seen.has(k) ? false : seen.add(k);
+    });
+  };
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByName(allBooks.concat(addedBook)),
+    };
+  });
+};
 
 const App = () => {
   const authorResult = useQuery(ALL_AUTHORS);
@@ -16,6 +37,18 @@ const App = () => {
   const padding = {
     padding: 5,
   };
+
+  const localToken = localStorage.getItem("book-user-token");
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data, client }) => {
+      const addedBook = data.data.bookAdded;
+      console.log(addedBook);
+      console.log("moi valo");
+      //window.alert(addedBook);
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
+    },
+  });
 
   const logout = () => {
     setToken(null);
@@ -29,6 +62,9 @@ const App = () => {
   if (bookResult.loading) {
     return <div>loading...</div>;
   }
+  if (genreResult.loading) {
+    return <div>loading...</div>;
+  }
 
   return (
     <Router>
@@ -40,17 +76,17 @@ const App = () => {
           <Link style={padding} to="/books">
             Books
           </Link>
-          {token && (
+          {localToken && (
             <Link style={padding} to="/add">
               Add book
             </Link>
           )}
-          {token && (
+          {localToken && (
             <Link style={padding} to="/recommend">
               Recommend
             </Link>
           )}
-          {token ? (
+          {localToken ? (
             <button onClick={logout}>logout</button>
           ) : (
             <Link to="/login">login</Link>
@@ -58,7 +94,10 @@ const App = () => {
         </div>
       </div>
       <Routes>
-        <Route path="/" element={<Authors />} />
+        <Route
+          path="/"
+          element={<Authors authors={authorResult.data.allAuthors} />}
+        />
         <Route
           path="/authors"
           element={<Authors authors={authorResult.data.allAuthors} />}
@@ -69,6 +108,7 @@ const App = () => {
         />
         <Route path="/add" element={<NewBook />} />
         <Route path="/login" element={<Login setToken={setToken} />}></Route>
+        <Route path="/recommend" element={<Recommend />}></Route>
       </Routes>
     </Router>
   );

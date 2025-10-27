@@ -1,11 +1,18 @@
 import { useQuery } from "@apollo/client/react";
 import { useState } from "react";
-import { ALL_BOOKS } from "../queries";
+import { ALL_BOOKS, ME } from "../queries";
 
 const Books = ({ genres }) => {
   const [genre, setGenre] = useState("");
   const { data, loading, error } = useQuery(ALL_BOOKS, {
     variables: { genre },
+    update: (cache, response) => {
+      cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(response.data.addBook),
+        };
+      });
+    },
   });
 
   const books = data?.allBooks || [];
