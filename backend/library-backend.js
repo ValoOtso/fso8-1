@@ -1,21 +1,23 @@
-import { ApolloServer } from "@apollo/server";
-import { expressMiddleware } from "@as-integrations/express5";
-import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { WebSocketServer } from "ws";
-import { useServer } from "graphql-ws/use/ws";
-import express from "express";
-import cors from "cors";
-import http from "http";
-import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-import typeDefs from "./schema.js";
-import resolvers from "./resolvers.js";
-import User from "./models/user.js";
+const { ApolloServer } = require("@apollo/server");
+const { expressMiddleware } = require("@as-integrations/express5");
+const {
+  ApolloServerPluginDrainHttpServer,
+} = require("@apollo/server/plugin/drainHttpServer");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
+const { WebSocketServer } = require("ws");
+const { useServer } = require("graphql-ws/use/ws");
+const express = require("express");
+const cors = require("cors");
+const http = require("http");
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+const typeDefs = require("./schema.js");
+const resolvers = require("./resolvers.js");
+const User = require("./models/user.js");
 
 mongoose.set("strictQuery", false);
-dotenv.config({ path: new URL("./.env", import.meta.url).pathname });
+require("dotenv").config({ path: __dirname + "/.env" });
 
 const MONGODB_URI = process.env.MONGODB_URI;
 

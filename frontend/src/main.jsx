@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
+import App from "./App";
 import {
   ApolloClient,
   HttpLink,
@@ -32,15 +32,6 @@ const httpLink = new HttpLink({
 const wsLink = new GraphQLWsLink(
   createClient({
     url: "ws://localhost:4000/graphql",
-    connectionAckWaitTimeout: 5000,
-    retryAttempts: Infinity,
-    retryWait: async (attempt) =>
-      new Promise((res) => setTimeout(res, 1000 * attempt)),
-    on: {
-      connected: () => console.log("WS connected"),
-      closed: () => console.log("WS closed"),
-      error: (err) => console.error("WS error", err),
-    },
   })
 );
 

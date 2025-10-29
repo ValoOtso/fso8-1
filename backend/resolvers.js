@@ -1,9 +1,10 @@
-import { GraphQLError } from "graphql";
-import jwt from "jsonwebtoken";
-import { PubSub } from "graphql-subscriptions";
-import Author from "./models/author.js";
-import Book from "./models/book.js";
-import User from "./models/user.js";
+const { GraphQLError } = require("graphql");
+const jwt = require("jsonwebtoken");
+const { PubSub } = require("graphql-subscriptions");
+const Author = require("./models/author.js");
+const Book = require("./models/book.js");
+const User = require("./models/user.js");
+
 const pubsub = new PubSub();
 
 const resolvers = {
@@ -146,4 +147,4 @@ const resolvers = {
   },
 };
 
-export default resolvers;
+module.exports = resolvers;

@@ -1,15 +1,12 @@
 {
   "private": true,
   "version": "0.0.0",
-  "name": "fso8-1",
+  "name": "frontend",
   "description": "books",
-  "main": "library-backend.js",
   "type": "module",
   "scripts": {
     "test": "test",
-    "dev:backend": "node --watch backend/library-backend.js",
-    "dev:frontend": "vite --config frontend/vite.config.js",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
