@@ -37,7 +37,7 @@ const start = async () => {
   const httpServer = http.createServer(app);
   const wsServer = new WebSocketServer({
     server: httpServer,
-    path: "/graphql",
+    path: "/",
   });
   const schema = makeExecutableSchema({ typeDefs, resolvers });
   const serverCleanup = useServer({ schema }, wsServer);
@@ -58,7 +58,7 @@ const start = async () => {
   });
   await server.start();
   app.use(
-    "/graphql",
+    "/",
     cors({ origin: "http://localhost:5173" }),
     express.json(),
     expressMiddleware(server, {
