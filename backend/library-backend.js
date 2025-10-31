@@ -59,7 +59,7 @@ const start = async () => {
   await server.start();
   app.use(
     "/",
-    cors({ origin: "http://localhost:5173" }),
+    cors(),
     express.json(),
     expressMiddleware(server, {
       context: async ({ req }) => {
@@ -72,7 +72,6 @@ const start = async () => {
           const currentUser = await User.findById(decodedToken.id);
           return { currentUser };
         }
-        return {};
       },
     })
   );
