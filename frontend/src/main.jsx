@@ -14,15 +14,14 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 
-const authLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem("book-user-token");
-  operation.setContext(({ headers = {} }) => ({
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("phonenumbers-user-token");
+  return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
+      authorization: token ? `bearer ${token}` : null,
     },
-  }));
-  return forward(operation);
+  };
 });
 
 const httpLink = new HttpLink({
